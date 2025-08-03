@@ -17,6 +17,7 @@ const TodoContext = createContext({
     done: false,
     activecount: 0,
     completecount: 0,
+    AiGenerateTask: false,
     // --
 
     todayactivecount: 0,
@@ -65,7 +66,7 @@ const TodoContext = createContext({
     addAll: () => { },
     addActive: () => { },
     addDone: () => { },
-
+    addAiGenerateTask: () => { },
 })
 
 

@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { useTodo } from '../context/TodoContext';
 
-const Form = ({className=''}) => {
+const Form = ({ className = '' }) => {
 
-    const { addTodo, setIsdark, isdark } = useTodo()
+    const { addTodo, setIsdark, isdark, addAiGenerateTask } = useTodo()
 
     const getTodayInDDMMYYYY = () => {
         const today = new Date();
@@ -38,7 +38,9 @@ const Form = ({className=''}) => {
             <div className={` dark:text-white flex items-center justify-between mb-3 py-1 px-3 md:px-4 md:py-4 bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-pink-500/10 dark:from-blue-600/20 dark:via-purple-600/20 dark:to-pink-600/20 rounded-xl border border-blue-200/30 dark:border-blue-700/30`}>
                 <h1 className="text-lg md:text-3xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 dark:from-blue-400 dark:via-purple-400 dark:to-pink-400 bg-clip-text text-transparent " style={{ opacity: 1 }}>✨ Smart Todo</h1>
                 <div className="flex items-center gap-2">
-                    <button className="cursor-pointer inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 border bg-background hover:bg-accent hover:text-accent-foreground h-9 rounded-md gap-1 sm:gap-2 bg-gradient-to-r from-purple-500/10 to-pink-500/10 dark:from-[#3d0946] dark:to-[#220c56] border-purple-300/50 dark:border-purple-700/50 hover:from-purple-500/20 hover:to-pink-500/20 dark:hover:from-purple-600/30 duration-600 dark:hover:to-pink-600/30 px-2 sm:px-3">
+                    <button
+                        onClick={() => addAiGenerateTask()}
+                        className="cursor-pointer inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 border bg-background hover:bg-accent hover:text-accent-foreground h-9 rounded-md gap-1 sm:gap-2 bg-gradient-to-r from-purple-500/10 to-pink-500/10 dark:from-[#3d0946] dark:to-[#220c56] border-purple-300/50 dark:border-purple-700/50 hover:from-purple-500/20 hover:to-pink-500/20 dark:hover:from-purple-600/30 duration-600 dark:hover:to-pink-600/30 px-2 sm:px-3">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-sparkles w-4 h-4 text-purple-600 dark:text-purple-400">
                             <path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"></path>
                             <path d="M20 3v4"></path>

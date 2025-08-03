@@ -6,6 +6,7 @@ import BottomButton from './components/BottomButton'
 import { MiddleSection } from './components/MiddleSection'
 import { FooterText } from './components/FooterText'
 import NoTask from './components/NoTask'
+import AiChatTaskBox from './components/AiChatTaskBox'
 
 function Code() {
     const [state, setState] = useState(() => {
@@ -13,6 +14,7 @@ function Code() {
 
         const parsed = stored ? JSON.parse(stored) : {
             todos: [],
+            AiGenerateTask: false,
             backdrop: false,
             delPopup: false,
             all: true,
@@ -42,6 +44,7 @@ function Code() {
             ...parsed,
             backdrop: false,
             delPopup: false,
+            AiGenerateTask: false,
         };
     });
 
@@ -248,6 +251,7 @@ function Code() {
             toggleTodo,
             addPopup,
             setIsdark,
+            addAiGenerateTask: () => setState(prev => ({ ...prev, backdrop: !prev.backdrop, AiGenerateTask: !prev.AiGenerateTask, })),
             setbackdrop: () => setState(prev => ({ ...prev, backdrop: !prev.backdrop })),
             addDelpopup: () => setState(prev => ({ ...prev, delPopup: !prev.delPopup })),
             setActivecount: (v) => setState(prev => ({ ...prev, activecount: v })),
@@ -255,17 +259,17 @@ function Code() {
             ...filters,
         }}>
             <div className="relative overflow-x-hidden min-h-screen h-full w-full bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-[#111827] dark:via-[#0d0e36] dark:to-[#3f0d5b] duration-700">
-                <div className=" h-full mx-auto w-full px-4 max-w-3xl mt-4">
+                <div className=" h-full mx-auto w-full sm:px-4 max-w-3xl sm:mt-4">
                     {state.backdrop && (
-                        <div className="absolute top-0 left-0 min-h-screen h-full w-screen bg-[#0000006f] z-10" />
+                        <div className="absolute top-0 left-0 min-h-screen h-full w-screen bg-[#000000c3] dark:bg-[#0000009f] z-10" />
                     )}
-                    <div className="relative h-full  w-full bg-white/80 dark:bg-gray-800/80 rounded-2xl shadow-xl border border-white/20 dark:border-gray-700/50 p-2 md:p-6 transition-all duration-700 ease-in-out">
+                    <div className="relative h-full w-full bg-white/80 dark:bg-gray-800/80 sm:rounded-2xl shadow-xl border border-white/20 dark:border-gray-700/50 p-2 md:p-6 transition-all duration-700 ease-in-out">
                         <Form className={''} />
 
                         <MiddleSection className={''} />
 
 
-                        <ul className="max-h-[40dvh] overflow-x-hidden overflow-y-auto px-3 custom-ul">
+                        <ul className="max-h-[40dvh] max-md:max-h-[35dvh] max-sm:max-h-[30dvh] overflow-x-hidden overflow-y-auto px-3 custom-ul">
                             {state.todos
                                 .filter((todo) => {
                                     if (state.alltime) return true;
@@ -295,6 +299,7 @@ function Code() {
 
 
                     </div>
+                    {state.AiGenerateTask && <AiChatTaskBox />}
 
                     {state.alltime && state.all ? state.todos.length > 0 ? null : <NoTask massage1="No tasks yet" massage2="Add your first task to get started!" /> : null}
                     {state.alltime && state.active ? state.activecount > 0 ? null : <NoTask massage1="No active tasks yet" massage2='Switch to "All" to see your completed tasks.' /> : null}
