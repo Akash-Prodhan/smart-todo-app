@@ -268,7 +268,6 @@ function Code() {
 
                         <MiddleSection className={''} />
 
-
                         <ul className="max-h-[40dvh] max-md:max-h-[35dvh] max-sm:max-h-[30dvh] overflow-x-hidden overflow-y-auto px-3 custom-ul">
                             {state.todos
                                 .filter((todo) => {
@@ -296,7 +295,6 @@ function Code() {
                         <BottomButton className={''} />
 
                         {state.todos.length > 0 && <FooterText className={''} />}
-
 
                     </div>
                     {state.AiGenerateTask && <AiChatTaskBox />}
