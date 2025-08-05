@@ -8,6 +8,7 @@ const TodoContext = createContext({
             complete: true,
             date: "29/08/2005",
             popup: true,
+            explanation: "",
         }
     ],
     backdrop: false,
@@ -18,6 +19,7 @@ const TodoContext = createContext({
     activecount: 0,
     completecount: 0,
     AiGenerateTask: false,
+    AiExplainTask: null,
     // --
 
     todayactivecount: 0,
@@ -67,6 +69,8 @@ const TodoContext = createContext({
     addActive: () => { },
     addDone: () => { },
     addAiGenerateTask: () => { },
+    addAiExplainTask: (id) => { },
+    addExplanation: (id, explanation) => { }
 })
 
 

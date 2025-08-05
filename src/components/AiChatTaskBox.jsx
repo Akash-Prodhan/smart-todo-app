@@ -6,7 +6,7 @@ import { FailedSms } from './FailedSms';
 import AiGenItem from './AiGenItem';
 
 const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
-const MODEL_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
+const MODEL_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`;
 
 
 const AiChatTaskBox = () => {
@@ -140,7 +140,7 @@ Schedule work breaks`;
                 {/* form end */}
 
                 {/* body */}
-                {loading && <Loader />}
+                {loading && <Loader loadingText={'Ai is created personalised tasks for you.'}/>}
 
                 {!prompt && <EmptyTask />}
 

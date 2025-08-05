@@ -1,11 +1,13 @@
 import React, { useState } from 'react'
 import { useTodo } from '../context/TodoContext'
 import Popup from './Popup'
+import AiTaskExplain from './AiTaskExplain'
 
 const Item = ({ todo }) => {
 
     const [todoMsg, setTodoMsg] = useState(todo.massage)
-    const { editTodo, toggleTodo, addPopup } = useTodo()
+    const { editTodo, toggleTodo, addPopup, AiExplainTask, addAiExplainTask } = useTodo()
+
     const [isTodoEditable, setIsTodoEditable] = useState(false)
 
     const updateTodo = () => {
@@ -17,15 +19,17 @@ const Item = ({ todo }) => {
         setIsTodoEditable(false)
     }
 
+
     return (
         <>
-            <div className="my-2 " draggable="true">
+            <div className="my-2 ">
                 <Popup className={`absolute top-1/2 left-1/2 transform  flex-col -translate-x-1/2 -translate-y-1/2 opacity-0 scale-50 z-50 duration-300 ${todo.popup ? "opacity-100 flex scale-100" : "hidden"}`}
                     id={todo.id}
                     todoMass={todo.massage}
-                    delType={"Delete task?"}
+                    delType={"Delete task?"} />
 
-                />
+                {AiExplainTask === todo.id && <AiTaskExplain text={todo.massage} id={todo.id} explanation={todo.explanation}/>}
+
                 <div className="cursor-default z-[unset] transform-none select-none touch-pan-x rounded" >
                     <div className="opacity-100 transform-none z-[1]">
                         <div className={`sm:hover:scale-x-[1.03]  group transform-none flex items-start gap-1 sm:gap-3 p-3 sm:p-4 rounded-lg border transition-all duration-300
@@ -77,7 +81,9 @@ const Item = ({ todo }) => {
                                 </div>
                             </div>
                             <div className="flex flex-row items-center gap-1 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity flex-shrink-0">
-                                <button className="cursor-pointer inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 hover:bg-accent rounded-md h-8 w-8 p-0 text-purple-500 hover:text-purple-700 hover:bg-gradient-to-r hover:from-purple-50 hover:to-pink-50 dark:text-purple-400 dark:hover:text-purple-300 dark:hover:from-purple-900/20 dark:hover:to-pink-900/20" title="Explain with AI">
+                                <button
+                                    onClick={() => addAiExplainTask(todo.id)}
+                                    className="cursor-pointer inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 hover:bg-accent rounded-md h-8 w-8 p-0 text-purple-500 hover:text-purple-700 hover:bg-gradient-to-r hover:from-purple-50 hover:to-pink-50 dark:text-purple-400 dark:hover:text-purple-300 dark:hover:from-purple-900/20 dark:hover:to-pink-900/20" title="Explain with AI">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-sparkles w-5 h-5">
                                         <path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"></path>
                                         <path d="M20 3v4"></path>

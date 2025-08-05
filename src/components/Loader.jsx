@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Loader = () => {
+const Loader = ({loadingText}) => {
     return (
         <>
             <div className="dark:text-white flex flex-col justify-center items-center gap-3">
@@ -14,7 +14,7 @@ const Loader = () => {
                     <path opacity="0.4" d="M18.3635 18.3635L16.2422 16.2422" stroke="#e33cff" strokeWidth="2" strokeLinecap="round"></path>
                     <path d="M7.75804 7.75804L5.63672 5.63672" stroke="#e33cff" strokeWidth="2" strokeLinecap="round"></path>
                 </svg>
-                <p className='dark:text-white'>Ai is created personalised tasks for you.</p>
+                <p className='dark:text-white'>{loadingText}</p>
             </div>
         </>
     )

@@ -15,6 +15,7 @@ function Code() {
         const parsed = stored ? JSON.parse(stored) : {
             todos: [],
             AiGenerateTask: false,
+            AiExplainTask: null,
             backdrop: false,
             delPopup: false,
             all: true,
@@ -45,6 +46,7 @@ function Code() {
             backdrop: false,
             delPopup: false,
             AiGenerateTask: false,
+            AiExplainTask: null,
         };
     });
 
@@ -145,6 +147,7 @@ function Code() {
             complete: false,
             date,
             popup: false,
+            explanation: null,
         };
         setState(prev => ({
             ...prev,
@@ -180,6 +183,14 @@ function Code() {
             ...prev,
             todos: prev.todos.map((todo) =>
                 todo.id === id ? { ...todo, massage } : todo
+            ),
+        }));
+    };
+    const addExplanation = (id, newExplanation = null) => {
+        setState(prev => ({
+            ...prev,
+            todos: prev.todos.map((todo) =>
+                todo.id === id ? { ...todo, explanation: newExplanation } : todo
             ),
         }));
     };
@@ -240,18 +251,27 @@ function Code() {
             ...prev, alltime: false, today: false, tomorrow: false, yesterday: false, week: false, month: true
         })),
     };
+    const addAiExplainTask = (id) => {
+        if (state.AiExplainTask === id) {
+            setState((prev) => ({ ...prev, AiExplainTask: null, backdrop: !prev.backdrop }))
+        } else {
+            setState((prev) => ({ ...prev, AiExplainTask: id, backdrop: !prev.backdrop }))
+        }
+    }
 
     return (
         <TodoProvider value={{
             ...state,
             addTodo,
+            addExplanation,
             deleteTodo,
             deleteAll,
             editTodo,
             toggleTodo,
             addPopup,
             setIsdark,
-            addAiGenerateTask: () => setState(prev => ({ ...prev, backdrop: !prev.backdrop, AiGenerateTask: !prev.AiGenerateTask, })),
+            addAiGenerateTask: (id) => setState(prev => ({ ...prev, backdrop: !prev.backdrop, AiGenerateTask: !prev.AiGenerateTask, })),
+            addAiExplainTask,
             setbackdrop: () => setState(prev => ({ ...prev, backdrop: !prev.backdrop })),
             addDelpopup: () => setState(prev => ({ ...prev, delPopup: !prev.delPopup })),
             setActivecount: (v) => setState(prev => ({ ...prev, activecount: v })),
@@ -265,9 +285,7 @@ function Code() {
                     )}
                     <div className="relative h-full w-full bg-white/80 dark:bg-gray-800/80 sm:rounded-2xl shadow-xl border border-white/20 dark:border-gray-700/50 p-2 md:p-6 transition-all duration-700 ease-in-out">
                         <Form className={''} />
-
                         <MiddleSection className={''} />
-
                         <ul className="max-h-[40dvh] max-md:max-h-[35dvh] max-sm:max-h-[30dvh] overflow-x-hidden overflow-y-auto px-3 custom-ul">
                             {state.todos
                                 .filter((todo) => {
@@ -291,11 +309,8 @@ function Code() {
                                     </li>
                                 ))}
                         </ul>
-
                         <BottomButton className={''} />
-
                         {state.todos.length > 0 && <FooterText className={''} />}
-
                     </div>
                     {state.AiGenerateTask && <AiChatTaskBox />}
 
