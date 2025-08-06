@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useTodo } from '../context/TodoContext'
 import Loader from './Loader';
-
-
-const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
-const MODEL_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`;
+import { FailedSms } from './FailedSms';
 
 const AiTaskExplain = ({ text, id, explanation }) => {
     const { addAiExplainTask, addExplanation } = useTodo()
@@ -27,13 +24,7 @@ const AiTaskExplain = ({ text, id, explanation }) => {
             setSaved((prev) => !prev);
             return;
         }
-        const handleExplain = async () => {
-
-            setLoading(true);
-            setFailed(false)
-            setSuccess(false)
-
-            const systemPrompt = `You are a helpful productivity assistant. Explain the given task in detail, including:
+        const systemPrompt = `You are a helpful productivity assistant. Explain the given task in detail, including:
 - What the task involves
 - Why it might be important
 - Potential steps to complete it
@@ -42,47 +33,49 @@ const AiTaskExplain = ({ text, id, explanation }) => {
 Keep the explanation concise but informative, around 2-3 sentences.
 
 Strict Rules:
- - only 2-3 sentences.
- - dont start with "Goal: "
-`;
+- only 2-3 sentences.
+- don't start with "Goal:"`;
 
+        const handleExplain = async () => {
+            setLoading(true);
+            setFailed(false);
+            setSuccess(false);
 
             try {
-                const response = await fetch(MODEL_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        contents: [{
-                            parts: [{ text: `${systemPrompt}\n\nGoal: ${text}` }]
-                        }],
-                        generationConfig: {
-                            temperature: 0.7,
-                            topK: 1,
-                            topP: 1,
-                            maxOutputTokens: 2048,
-                        },
-                    })
-                });
+                const response = await fetch("http://localhost:5000/api/explain", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ taskText: text, systemPrompt: systemPrompt })
+                })
+
                 const data = await response.json();
-                const explain = data.candidates?.[0]?.content?.parts?.[0]?.text || "";
-                setNewExplanation(explain)
-                setSuccess(true)
+
+                if (response.ok && data.explanation) {
+                    setNewExplanation(data.explanation);
+                    setSuccess(true);
+                } else {
+                    setFailed(true);
+                }
             } catch (err) {
-                setFailed(true)
+                console.log("Failed to fetch explanation:", err);
+                setFailed(true);
             } finally {
                 setLoading(false);
             }
+
         };
         handleExplain();
     }, [regenerate]);
 
     const addTaskExplanation = () => {
+        // delete saved explanation
         if (saved) {
             addExplanation(id, null);
             setSaved(false);
             setNewExplanation("");
             setRegenerate(prev => !prev);
-        } else {
+        } else { 
+            // saved explanation
             addExplanation(id, newExplanation);
             setSaved(true);
         }
@@ -96,7 +89,6 @@ Strict Rules:
         } else {
             setRegenerate((prev) => !prev)
         }
-
     }
 
     return (
@@ -149,7 +141,7 @@ Strict Rules:
                                     {newExplanation}
                                 </p>
                             </div> : null}
-                        {failed && <div>failed</div>}
+                        {failed && <FailedSms />}
                     </div>
                 </div>
                 <div className="flex-shrink-0 flex flex-col gap-3 pt-4 border-t border-gray-200 dark:border-gray-700">

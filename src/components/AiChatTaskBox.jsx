@@ -5,9 +5,6 @@ import EmptyTask from './EmptyTask';
 import { FailedSms } from './FailedSms';
 import AiGenItem from './AiGenItem';
 
-const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
-const MODEL_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`;
-
 
 const AiChatTaskBox = () => {
     const { addAiGenerateTask } = useTodo()
@@ -30,35 +27,25 @@ const AiChatTaskBox = () => {
 
         const systemPrompt = `You are a helpful productivity assistant. Generate 4–5 clear, actionable task suggestions based on the user's prompt.
 
-Strict Rules:
-- NO numbers, bullets, or formatting (like "1.", "Tip 1", "•", etc.)
-- Each task must be a short action (under 50 characters)
-- Avoid repeating or stating "task", "tip", or "suggestion"
-- Return raw task titles only — one per line
+    Strict Rules:
+    - NO numbers, bullets, or formatting (like "1.", "Tip 1", "•", etc.)
+    - Each task must be a short action (under 50 characters)
+    - Avoid repeating or stating "task", "tip", or "suggestion"
+    - Return raw task titles only — one per line
 
-Example Output:
-Do deep focus work
-Set phone on silent
-Schedule work breaks`;
+    Example Output:
+    Do deep focus work
+    Set phone on silent
+    Schedule work breaks`;
 
         try {
-            const response = await fetch(MODEL_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    contents: [{
-                        parts: [{ text: `${systemPrompt}\n\nGoal: ${prompt}` }]
-                    }],
-                    generationConfig: {
-                        temperature: 0.7,
-                        topK: 1,
-                        topP: 1,
-                        maxOutputTokens: 2048,
-                    },
-                })
-            });
+            const response = await fetch("http://localhost:5000/api/explain", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ taskText: prompt, systemPrompt: systemPrompt })
+            })
             const data = await response.json();
-            const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+            const text = data.explanation || '';
 
             const suggestions = text
                 .split('\n')
@@ -74,6 +61,7 @@ Schedule work breaks`;
             setLoading(false);
         }
     };
+
 
     return (
         <>
@@ -140,7 +128,7 @@ Schedule work breaks`;
                 {/* form end */}
 
                 {/* body */}
-                {loading && <Loader loadingText={'Ai is created personalised tasks for you.'}/>}
+                {loading && <Loader loadingText={'Ai is created personalised tasks for you.'} />}
 
                 {!prompt && <EmptyTask />}
 
