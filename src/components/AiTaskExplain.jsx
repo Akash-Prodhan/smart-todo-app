@@ -42,7 +42,7 @@ Strict Rules:
             setSuccess(false);
 
             try {
-                const response = await fetch("http://localhost:5000/api/explain", {
+                const response = await fetch("https://planpilot-backend-xjdq.onrender.com", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ taskText: text, systemPrompt: systemPrompt })
