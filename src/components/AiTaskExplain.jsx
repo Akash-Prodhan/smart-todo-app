@@ -42,7 +42,7 @@ Strict Rules:
             setSuccess(false);
 
             try {
-                const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/explain`, {
+                const response = await fetch(`https://planpilot-backend-xjdq.onrender.com/api/explain`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ taskText: text, systemPrompt: systemPrompt })
