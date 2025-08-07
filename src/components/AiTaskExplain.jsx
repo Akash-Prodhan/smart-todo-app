@@ -39,9 +39,9 @@ Strict Rules:
         const handleExplain = async () => {
             setLoading(true);
             setFailed(false);
-            setSuccess(false);
 
-            try {
+
+            try {    
                 const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/explain`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
